@@ -37,6 +37,9 @@ ADD ./src/common/install/ $INST_SCRIPTS/
 ADD ./src/ubuntu/install/ $INST_SCRIPTS/
 RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 
+### Add python pushover app
+ADD ./src/python $HOME/py-push
+
 ### Install some common tools
 RUN $INST_SCRIPTS/tools.sh
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
