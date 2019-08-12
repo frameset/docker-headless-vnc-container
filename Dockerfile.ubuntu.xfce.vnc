@@ -49,9 +49,9 @@ RUN $INST_SCRIPTS/tigervnc.sh
 RUN $INST_SCRIPTS/no_vnc.sh
 
 ### Install firefox and chrome browser
-RUN $INST_SCRIPTS/firefox.sh
+#RUN $INST_SCRIPTS/firefox.sh
 RUN $INST_SCRIPTS/chrome.sh
-
+RUN $INST_SCRIPTS/firefox.sh
 ### Install xfce UI
 RUN $INST_SCRIPTS/xfce_ui.sh
 ADD ./src/common/xfce/ $HOME/
@@ -59,6 +59,9 @@ ADD ./src/common/xfce/ $HOME/
 ### configure startup
 RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./src/common/scripts $STARTUPDIR
+RUN cp $INST_SCRIPTS/crash-fix.js /etc/firefox-esr/crash-fix.js
+RUN mkdir -p $HOME/.config/autostart
+RUN cp $INST_SCRIPTS/Browser.desktop $HOME/.config/autostart/Browser.desktop
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
 USER 1000
