@@ -40,6 +40,14 @@ RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 ### Add python pushover app
 ADD ./src/python $HOME/py-push
 
+### Add browser extension and copy helper files to appropriate directories
+ADD ./src/addon $HOME/addon
+RUN mkdir -p $HOME/.mozilla/native-messaging-hosts
+RUN cp $HOME/py-push/ping_pong.json $HOME/.mozilla/native-messaging-hosts/
+RUN mkdir -p /usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+RUN cp $HOME/addon/ping_pong.xpi /usr/share/mozilla/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}/ping_pong\@example.org.xpi
+RUN find $HOME/py-push -name '*.py' -exec chmod a+x {} +
+
 ### Install some common tools
 RUN $INST_SCRIPTS/tools.sh
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
@@ -67,7 +75,7 @@ RUN mkdir -p $HOME/.config/autostart
 RUN cp $INST_SCRIPTS/Browser.desktop $HOME/.config/autostart/Browser.desktop
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
-USER 1000
+#USER 1000
 
 ENTRYPOINT ["/dockerstartup/vnc_startup.sh"]
 CMD ["--wait"]
